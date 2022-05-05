@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'sam-hello-lambda
+
+  Sample SAM Template for sam-hello-lambda
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+      Runtime: java11
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/10ff88937fc704ded7558a796ddf0c7a
+      MemorySize: 256
+      Timeout: 15
+      Policies: AWSLambdaBasicExecutionRole
+    Metadata:
+      SamResourceId: HelloWorldFunction
+Outputs:
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunctionRole
+      - Arn
