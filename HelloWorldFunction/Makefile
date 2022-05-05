@@ -3,5 +3,5 @@ clean:
 build:
 	./mvnw package
 
-build-Helloworldfunction: clean build
+build-HelloWorldFunction: clean build
 	unzip target/function.zip -d $(ARTIFACTS_DIR)/

@@ -14,7 +14,9 @@ Resources:
     Properties:
       Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
       Runtime: java11
-      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/10ff88937fc704ded7558a796ddf0c7a
+      Architectures:
+      - x86_64
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/34af8c722658990cc1384e8351576db4
       MemorySize: 256
       Timeout: 15
       Policies: AWSLambdaBasicExecutionRole
