@@ -14,20 +14,18 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
-      Runtime: java11
-      Architectures:
-        - x86_64
+      Handler: not.used.in.provided.runtime
+      Runtime: provided
       CodeUri: HelloWorldFunction
       MemorySize: 256
       Timeout: 15
       Policies: AWSLambdaBasicExecutionRole
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
          Variables:
-           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+#           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1 # More info about tiered compilation https://aws.amazon.com/blogs/compute/optimizing-aws-lambda-function-performance-for-java/
+           DISABLE_SIGNAL_HANDLERS: true
     Metadata:
       BuildMethod: makefile
-
 
 Outputs:
   HelloWorldFunction:

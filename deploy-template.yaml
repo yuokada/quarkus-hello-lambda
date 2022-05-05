@@ -12,15 +12,17 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
-      Runtime: java11
-      Architectures:
-      - x86_64
-      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/34af8c722658990cc1384e8351576db4
+      Handler: not.used.in.provided.runtime
+      Runtime: provided
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/e2361fead6d41ce5449b8c22b509cf3b
       MemorySize: 256
       Timeout: 15
       Policies: AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          DISABLE_SIGNAL_HANDLERS: true
     Metadata:
+      BuildMethod: makefile
       SamResourceId: HelloWorldFunction
 Outputs:
   HelloWorldFunction:

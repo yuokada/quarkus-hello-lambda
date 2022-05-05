@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public class InputEvent
 {
-    Optional<String> name;
+    Optional<String> name = Optional.empty();
 
     public Optional<String> getName()
     {
