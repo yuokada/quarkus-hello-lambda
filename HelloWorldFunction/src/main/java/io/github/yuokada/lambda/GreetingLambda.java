@@ -8,6 +8,7 @@ import io.github.yuokada.lambda.model.OutputResponse;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
@@ -22,16 +23,16 @@ public class GreetingLambda
     @Override
     public OutputResponse handleRequest(InputEvent input, Context context)
     {
-        return handleRequestWithValidation(input, context);
+        try {
+            return handleRequestWithValidation(input, context);
+        }
+        catch (ConstraintViolationException e) {
+            return new OutputResponse().setMessage("InputEvent is invalid!");
+        }
     }
 
     public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context)
     {
-        Set<ConstraintViolation<InputEvent>> violations = validator.validate(input);
-        if (!violations.isEmpty()) {
-            return new OutputResponse().setMessage("InputEvent is invalid!");
-        }
-
         if (input.getName() != null) {
             OutputResponse response = new OutputResponse().setName(input.getName()).setMessage("Hello " + input.getName());
             return response;

@@ -45,7 +45,7 @@ public class LambdaHandlerTest {
                 .post()
                 .then()
                 .statusCode(200)
-                .body(containsString("Hello World"));
+                .body(containsString("InputEvent is invalid!"));
     }
 
 
