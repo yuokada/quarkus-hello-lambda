@@ -1,6 +1,9 @@
 clean:
 	./mvnw clean
 build:
+	./mvnw package
+
+build-native:
 	./mvnw package -Pnative -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
 
 build-HelloWorldFunction: clean build

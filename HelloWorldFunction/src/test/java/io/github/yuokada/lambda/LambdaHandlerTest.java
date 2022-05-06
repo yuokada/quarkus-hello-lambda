@@ -19,7 +19,7 @@ public class LambdaHandlerTest {
         // this works in dev mode too
 
         InputEvent in = new InputEvent();
-        in.setName(Optional.of("Randy"));
+        in.setName("Randy");
         given()
                 .contentType("application/json")
                 .accept("application/json")

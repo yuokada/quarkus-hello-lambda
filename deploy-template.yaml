@@ -14,7 +14,7 @@ Resources:
     Properties:
       Handler: not.used.in.provided.runtime
       Runtime: provided
-      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/e2361fead6d41ce5449b8c22b509cf3b
+      CodeUri: s3://aws-sam-cli-managed-default-samclisourcebucket-cnzbjwehiaa9/b8be3857b144d0db455a8d12635c7bac
       MemorySize: 256
       Timeout: 15
       Policies: AWSLambdaBasicExecutionRole
