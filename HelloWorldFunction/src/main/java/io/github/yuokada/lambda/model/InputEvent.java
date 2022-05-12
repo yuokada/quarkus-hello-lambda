@@ -18,4 +18,12 @@ public class InputEvent
     {
         this.name = name;
     }
+
+    @Override
+    public String toString()
+    {
+        return "InputEvent{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

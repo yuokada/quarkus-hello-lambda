@@ -3,7 +3,7 @@ clean:
 	cd HelloWorldFunction && ./mvnw clean
 
 build:
-	sam build
+	sam build --cached --parallel
 
 scratch_build:clean build
 

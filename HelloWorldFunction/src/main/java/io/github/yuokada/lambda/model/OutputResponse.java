@@ -4,17 +4,17 @@ import java.util.Optional;
 
 public class OutputResponse
 {
-    Optional<String> name = Optional.empty();
+    String name;
     String message;
 
-    public Optional<String> getName()
+    public String getName()
     {
         return name;
     }
 
     public OutputResponse setName(String name)
     {
-        this.name = Optional.of(name);
+        this.name = name;
         return this;
     }
 

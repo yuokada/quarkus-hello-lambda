@@ -14,8 +14,8 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: not.used.in.provided.runtime
-      Runtime: provided
+      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+      Runtime: java11
       CodeUri: HelloWorldFunction
       MemorySize: 256
       Timeout: 15
