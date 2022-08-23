@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "pom" 
+    directory: "/" 
+    schedule:
+      interval: "daily"
