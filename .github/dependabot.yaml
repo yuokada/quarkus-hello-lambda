@@ -10,3 +10,6 @@ updates:
     directory: "./HelloWorldFunction" 
     schedule:
       interval: "monthly"
+    ignore:
+      - dependency-name: "quarkus-bom"
+        update-types: ["version-update:semver-major"]
