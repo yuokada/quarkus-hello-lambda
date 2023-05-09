@@ -13,3 +13,5 @@ updates:
     ignore:
       - dependency-name: "quarkus-bom"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "quarkus-maven-plugin"
+        update-types: ["version-update:semver-major"]
