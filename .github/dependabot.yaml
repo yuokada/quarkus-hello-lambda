@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: "monthly"
     ignore:
-      - dependency-name: "quarkus-bom"
+      - dependency-name: "io.quarkus.platform:quarkus-bom"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "quarkus-maven-plugin"
+      - dependency-name: "io.quarkus.platform:quarkus-maven-plugin"
         update-types: ["version-update:semver-major"]
