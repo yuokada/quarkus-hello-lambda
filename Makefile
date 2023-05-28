@@ -12,3 +12,6 @@ package:
 
 deploy: package
 	sam deploy --profile serverless --template-file deploy-template.yaml --config-file samconfig.toml
+
+delete:
+	sam delete --config-file samconfig.toml
