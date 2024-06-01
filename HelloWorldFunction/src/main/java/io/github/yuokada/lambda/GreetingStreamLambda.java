@@ -10,11 +10,11 @@ import io.github.yuokada.lambda.model.InputEvent;
 import io.github.yuokada.lambda.model.OutputResponse;
 import org.jboss.logging.Logger;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
-import javax.validation.Validator;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -1,6 +1,6 @@
 package io.github.yuokada.lambda.model;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Optional;
 
