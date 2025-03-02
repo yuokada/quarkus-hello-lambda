@@ -1,14 +1,11 @@
 package io.github.yuokada.lambda;
 
-import io.github.yuokada.lambda.model.InputEvent;
-import org.junit.jupiter.api.Test;
-
-import io.quarkus.test.junit.QuarkusTest;
-
-import java.util.Optional;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+
+import io.github.yuokada.lambda.model.InputEvent;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 public class LambdaHandlerTest {
@@ -21,14 +18,14 @@ public class LambdaHandlerTest {
         InputEvent in = new InputEvent();
         in.setName("Randy");
         given()
-                .contentType("application/json")
-                .accept("application/json")
-                .body(in)
-                .when()
-                .post()
-                .then()
-                .statusCode(200)
-                .body(containsString("{\"name\":\"Randy\",\"message\":\"Hello Randy\"}"));
+            .contentType("application/json")
+            .accept("application/json")
+            .body(in)
+            .when()
+            .post()
+            .then()
+            .statusCode(200)
+            .body(containsString("{\"name\":\"Randy\",\"message\":\"Hello Randy\"}"));
     }
 
     @Test
@@ -38,14 +35,14 @@ public class LambdaHandlerTest {
 
         InputEvent in = new InputEvent();
         given()
-                .contentType("application/json")
-                .accept("application/json")
-                .body(in)
-                .when()
-                .post()
-                .then()
-                .statusCode(200)
-                .body(containsString("InputEvent is invalid!"));
+            .contentType("application/json")
+            .accept("application/json")
+            .body(in)
+            .when()
+            .post()
+            .then()
+            .statusCode(200)
+            .body(containsString("InputEvent is invalid!"));
     }
 
 
