@@ -6,12 +6,12 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-  - package-ecosystem: "maven" 
-    directory: "./HelloWorldFunction" 
+  - package-ecosystem: "maven"
+    directory: "./HelloWorldFunction"
     schedule:
       interval: "monthly"
     ignore:
       - dependency-name: "io.quarkus.platform:quarkus-bom"
-        update-types: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
       - dependency-name: "io.quarkus.platform:quarkus-maven-plugin"
-        update-types: ["version-update:semver-major"]
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
