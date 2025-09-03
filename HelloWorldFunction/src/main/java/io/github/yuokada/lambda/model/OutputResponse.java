@@ -2,24 +2,24 @@ package io.github.yuokada.lambda.model;
 
 public class OutputResponse {
 
-    String name;
-    String message;
+  String name;
+  String message;
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public OutputResponse setName(String name) {
-        this.name = name;
-        return this;
-    }
+  public OutputResponse setName(String name) {
+    this.name = name;
+    return this;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public OutputResponse setMessage(String message) {
-        this.message = message;
-        return this;
-    }
+  public OutputResponse setMessage(String message) {
+    this.message = message;
+    return this;
+  }
 }

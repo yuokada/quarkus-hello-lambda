@@ -12,37 +12,35 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 @DisabledIfEnvironmentVariable(named = "GITHUB_ACTIONS", matches = "true")
 public class LambdaHandlerTest {
 
-    @Test
-    public void testSimpleLambdaSuccess() throws Exception {
-        // you test your lambas by invoking on http://localhost:8081
-        // this works in dev mode too
+  @Test
+  public void testSimpleLambdaSuccess() throws Exception {
+    // you test your lambas by invoking on http://localhost:8081
+    // this works in dev mode too
 
-        InputEvent in = new InputEvent();
-        in.setName("Randy");
-        given()
-            .contentType("application/json")
-            .accept("application/json")
-            .body(in)
-            .when()
-            .post()
-            .then()
-            .statusCode(200)
-            .body(containsString("{\"name\":\"Randy\",\"message\":\"Hello Randy\"}"));
-    }
+    InputEvent in = new InputEvent();
+    in.setName("Randy");
+    given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(in)
+        .when()
+        .post()
+        .then()
+        .statusCode(200)
+        .body(containsString("{\"name\":\"Randy\",\"message\":\"Hello Randy\"}"));
+  }
 
-    @Test
-    public void testSimpleLambdaWithoutParamSuccess() throws Exception {
-        InputEvent in = new InputEvent();
-        given()
-            .contentType("application/json")
-            .accept("application/json")
-            .body(in)
-            .when()
-            .post()
-            .then()
-            .statusCode(200)
-            .body(containsString("InputEvent is invalid!"));
-    }
-
-
+  @Test
+  public void testSimpleLambdaWithoutParamSuccess() throws Exception {
+    InputEvent in = new InputEvent();
+    given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(in)
+        .when()
+        .post()
+        .then()
+        .statusCode(200)
+        .body(containsString("InputEvent is invalid!"));
+  }
 }

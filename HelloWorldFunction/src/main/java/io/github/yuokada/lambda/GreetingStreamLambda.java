@@ -22,46 +22,46 @@ import java.nio.charset.StandardCharsets;
 import org.jboss.logging.Logger;
 
 @Named("stream-handler")
-public class GreetingStreamLambda
-    implements RequestStreamHandler {
+public class GreetingStreamLambda implements RequestStreamHandler {
 
-    private static final Logger logger = Logger.getLogger(GreetingStreamLambda.class);
-    @Inject
-    Validator validator;
-    // Jackson
-    ObjectMapper mapper = new ObjectMapper();
+  private static final Logger logger = Logger.getLogger(GreetingStreamLambda.class);
+  @Inject Validator validator;
+  // Jackson
+  ObjectMapper mapper = new ObjectMapper();
 
-    public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
-        if (input.getName() != null) {
-            OutputResponse response = new OutputResponse().setName(input.getName())
-                .setMessage("Hello " + input.getName());
-            return response;
-        } else {
-            OutputResponse response = new OutputResponse().setMessage("Hello World");
-            return response;
-        }
+  public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
+    if (input.getName() != null) {
+      OutputResponse response =
+          new OutputResponse().setName(input.getName()).setMessage("Hello " + input.getName());
+      return response;
+    } else {
+      OutputResponse response = new OutputResponse().setMessage("Hello World");
+      return response;
     }
+  }
 
-    @Override
-    public void handleRequest(InputStream input, OutputStream output, Context context)
-        throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+  @Override
+  public void handleRequest(InputStream input, OutputStream output, Context context)
+      throws IOException {
+    BufferedReader reader =
+        new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+    BufferedWriter writer =
+        new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
 
-        try {
-            InputEvent inputEvent = mapper.readValue(reader, InputEvent.class);
-            logger.info(input);
-            OutputResponse response = handleRequestWithValidation(inputEvent, context);
-            writer.write(mapper.writeValueAsString(response));
-        } catch (UnrecognizedPropertyException | ConstraintViolationException e) {
-            String message = String.format("InputEvent is invalid! (%s)", e.getMessage());
-            OutputResponse response = new OutputResponse().setMessage(message);
-            writer.write(mapper.writeValueAsString(response));
-        } catch (RuntimeException e) {
-            logger.info(e.getMessage());
-        } finally {
-            reader.close();
-            writer.close();
-        }
+    try {
+      InputEvent inputEvent = mapper.readValue(reader, InputEvent.class);
+      logger.info(input);
+      OutputResponse response = handleRequestWithValidation(inputEvent, context);
+      writer.write(mapper.writeValueAsString(response));
+    } catch (UnrecognizedPropertyException | ConstraintViolationException e) {
+      String message = String.format("InputEvent is invalid! (%s)", e.getMessage());
+      OutputResponse response = new OutputResponse().setMessage(message);
+      writer.write(mapper.writeValueAsString(response));
+    } catch (RuntimeException e) {
+      logger.info(e.getMessage());
+    } finally {
+      reader.close();
+      writer.close();
     }
+  }
 }
