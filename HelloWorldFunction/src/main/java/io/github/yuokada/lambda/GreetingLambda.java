@@ -11,25 +11,26 @@ import jakarta.validation.Validator;
 
 public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse> {
 
-  @Inject Validator validator;
+    @Inject
+    Validator validator;
 
-  @Override
-  public OutputResponse handleRequest(InputEvent input, Context context) {
-    try {
-      return handleRequestWithValidation(input, context);
-    } catch (ConstraintViolationException e) {
-      return new OutputResponse().setMessage("InputEvent is invalid!");
+    @Override
+    public OutputResponse handleRequest(InputEvent input, Context context) {
+        try {
+            return handleRequestWithValidation(input, context);
+        } catch (ConstraintViolationException e) {
+            return new OutputResponse().setMessage("InputEvent is invalid!");
+        }
     }
-  }
 
-  public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
-    if (input.getName() != null) {
-      OutputResponse response =
-          new OutputResponse().setName(input.getName()).setMessage("Hello " + input.getName());
-      return response;
-    } else {
-      OutputResponse response = new OutputResponse().setMessage("Hello World");
-      return response;
+    public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
+        if (input.getName() != null) {
+            OutputResponse response = new OutputResponse().setName(input.getName())
+                    .setMessage("Hello " + input.getName());
+            return response;
+        } else {
+            OutputResponse response = new OutputResponse().setMessage("Hello World");
+            return response;
+        }
     }
-  }
 }

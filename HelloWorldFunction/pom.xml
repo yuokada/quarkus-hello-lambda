@@ -19,7 +19,7 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
     <spotless.plugin.version>2.43.0</spotless.plugin.version>
-    <google-java-format.version>1.17.0</google-java-format.version>
+    <google-java-format.version>1.28.0</google-java-format.version>
     <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
     <checkstyle.version>10.16.0</checkstyle.version>
   </properties>
@@ -130,6 +130,9 @@
             <googleJavaFormat>
               <version>${google-java-format.version}</version>
             </googleJavaFormat>
+            <eclipse>
+              <file>${project.basedir}/config/checkstyle/eclipse-java-formatter.xml</file>
+            </eclipse>
           </java>
         </configuration>
         <executions>
