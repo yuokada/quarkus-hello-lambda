@@ -31,8 +31,8 @@ The Serverless Application Model Command Line Interface (SAM CLI) is an extensio
 To use the SAM CLI, you need the following tools.
 
 * SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* Java11 - [Install the Java 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html)
-* Maven - [Install Maven](https://maven.apache.org/install.html)
+* Java 17 (JDK 17) - [Install the Java 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
+* Maven 3.9+ - [Install Maven](https://maven.apache.org/install.html)
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 To build and deploy your application for the first time, run the following in your shell:
@@ -125,3 +125,54 @@ aws cloudformation delete-stack --stack-name sam-hello-lambda
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+
+## 開発クイックスタート
+
+- 前提ツール
+  - Java 17 (JDK 17)
+  - Maven 3.9+
+  - Docker
+  - AWS SAM CLI
+
+- 基本コマンド
+  - ビルド: `make build` または `sam build`
+  - ローカル実行（イベントファイル）: `sam local invoke HelloWorldFunction --event events/event.json`
+  - ローカル API: `sam local start-api`
+  - テスト: `cd HelloWorldFunction && ./mvnw test`
+  - パッケージ: `cd HelloWorldFunction && ./mvnw package`
+
+## よく使うコマンド
+
+- SAM/Make
+  - `make clean` / `make build` / `make package`
+  - デプロイ: `make deploy`（AWS プロファイル `serverless` を使用）
+  - スタック削除: `make delete`
+
+- ローカル実行
+  - 単発実行（イベントファイル）: `sam local invoke HelloWorldFunction --event events/event.json`
+  - API エミュレーション: `sam local start-api`
+
+- Maven（アプリ配下）
+  - テスト: `cd HelloWorldFunction && ./mvnw test`
+  - パッケージ: `cd HelloWorldFunction && ./mvnw package`
+  - ネイティブ: `cd HelloWorldFunction && ./mvnw package -Pnative -Dquarkus.native.container-build=true`
+
+## ローカルイベント最小例
+
+- 最小入力（`InputEvent`）
+  - `{"name":"Randy"}`
+- パイプでの実行例
+  - `echo '{"name":"Randy"}' | sam local invoke HelloWorldFunction`
+- 備考
+  - `events/event.json` は API Gateway 互換の例です。最小入力での検証には上記 JSON を推奨します。
+
+## 開発モードの注意
+
+- `./mvnw quarkus:dev` は便利ですが、Amazon Lambda Binding は dev モードと完全互換ではありません。
+- 実運用に近い確認は `sam local invoke` / `sam local start-api` を推奨します。
+
+## CI のビルド
+
+- CI は JDK 17 + Maven で以下を実行します。
+  - `cd HelloWorldFunction && ./mvnw -B verify`
+  - `cd HelloWorldFunction && ./mvnw -B package`
