@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -32,6 +34,10 @@ public class GreetingStreamLambda implements RequestStreamHandler {
     ObjectMapper mapper = new ObjectMapper();
 
     public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
+        Set<ConstraintViolation<InputEvent>> violations = validator.validate(input);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         if (input.getName() != null) {
             OutputResponse response =
                     new OutputResponse()
