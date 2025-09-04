@@ -8,6 +8,8 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import java.util.Set;
 
 public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse> {
 
@@ -24,6 +26,10 @@ public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse
     }
 
     public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
+        Set<ConstraintViolation<InputEvent>> violations = validator.validate(input);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         if (input.getName() != null) {
             OutputResponse response = new OutputResponse().setName(input.getName())
                     .setMessage("Hello " + input.getName());
