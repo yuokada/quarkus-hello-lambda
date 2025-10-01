@@ -21,7 +21,7 @@
     <spotless.plugin.version>2.43.0</spotless.plugin.version>
     <google-java-format.version>1.28.0</google-java-format.version>
     <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
-    <checkstyle.version>10.16.0</checkstyle.version>
+    <checkstyle.version>11.1.0</checkstyle.version>
   </properties>
 
   <dependencyManagement>
