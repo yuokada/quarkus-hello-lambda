@@ -17,6 +17,8 @@ Resources:
       Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
       Runtime: java17
       CodeUri: HelloWorldFunction
+      Architectures:
+        - arm64
       MemorySize: 256
       Timeout: 15
       Policies: AWSLambdaBasicExecutionRole
