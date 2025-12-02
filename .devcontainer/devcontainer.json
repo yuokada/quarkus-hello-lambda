@@ -36,6 +36,6 @@
         "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
     ],
     "workspaceFolder": "/workspace",
-    "postCreateCommand": "cd HelloWorldFunction && ./mvnw dependency:resolve",
+    "postCreateCommand": "if [ -d HelloWorldFunction ]; then cd HelloWorldFunction && ./mvnw dependency:resolve; else echo 'HelloWorldFunction directory not found, skipping dependency resolution'; fi",
     "remoteUser": "vscode"
 }

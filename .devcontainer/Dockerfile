@@ -25,8 +25,9 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/bi
     && ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven \
     && ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 
-# Install AWS SAM CLI
-RUN curl -fsSL https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip -o /tmp/sam.zip \
+# Install AWS SAM CLI (pinned version for reproducible builds)
+ARG SAM_CLI_VERSION=1.133.0
+RUN curl -fsSL https://github.com/aws/aws-sam-cli/releases/download/v${SAM_CLI_VERSION}/aws-sam-cli-linux-x86_64.zip -o /tmp/sam.zip \
     && unzip /tmp/sam.zip -d /tmp/sam \
     && /tmp/sam/install \
     && rm -rf /tmp/sam /tmp/sam.zip

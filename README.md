@@ -128,6 +128,24 @@ Next, you can use AWS Serverless Application Repository to deploy ready to use A
 
 ## 開発クイックスタート
 
+### Dev Container（推奨）
+
+VS Code と Docker があれば、Dev Container を使って統一された開発環境をすぐに利用できます。
+
+1. VS Code で [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 拡張機能をインストール
+2. このリポジトリを開く
+3. コマンドパレットから「Dev Containers: Reopen in Container」を実行
+
+Dev Container には以下が含まれています：
+- GraalVM Community Edition (Java 17) — ネイティブビルド対応
+- Maven 3.9.x
+- AWS CLI / SAM CLI
+- Docker-in-Docker
+
+### 手動セットアップ
+
+Dev Container を使用しない場合は、以下のツールを手動でインストールしてください。
+
 - 前提ツール
   - Java 17 (JDK 17)
   - Maven 3.9+
