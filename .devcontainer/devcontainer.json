@@ -1,0 +1,41 @@
+{
+    "name": "Quarkus Lambda Dev Environment",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "moby": true
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "redhat.java",
+                "vscjava.vscode-maven",
+                "redhat.vscode-quarkus",
+                "amazonwebservices.aws-toolkit-vscode"
+            ],
+            "settings": {
+                "java.configuration.runtimes": [
+                    {
+                        "name": "JavaSE-17",
+                        "path": "/usr/lib64/graalvm/graalvm-community-java17",
+                        "default": true
+                    }
+                ],
+                "java.jdt.ls.java.home": "/usr/lib64/graalvm/graalvm-community-java17",
+                "maven.executable.path": "/opt/maven/bin/mvn"
+            }
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": "cd HelloWorldFunction && ./mvnw dependency:resolve",
+    "remoteUser": "vscode"
+}
