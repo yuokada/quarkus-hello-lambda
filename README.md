@@ -176,3 +176,51 @@ Next, you can use AWS Serverless Application Repository to deploy ready to use A
 - CI は JDK 17 + Maven で以下を実行します。
   - `cd HelloWorldFunction && ./mvnw -B verify`
   - `cd HelloWorldFunction && ./mvnw -B package`
+
+## Lambda 実行環境の最適化
+
+### アーキテクチャ (Architectures: arm64)
+
+ARM64 (AWS Graviton2) プロセッサを選択した理由:
+
+- **コスト**: x86_64 比で約20%の価格削減
+- **パフォーマンス**: Java 17 は ARM64 で最適化されており、同等以上のパフォーマンスを発揮
+- **消費電力**: 省電力設計によりサステナビリティに貢献
+
+### メモリ (MemorySize: 256)
+
+256MB を選択した理由:
+
+- Java 17 + Quarkus のシンプルな Hello World アプリケーションに適切なサイズ
+- Lambda はメモリ設定に比例して CPU リソースも割り当てられるため、起動時間とのバランスを考慮
+- 128MB では起動時間が長くなり、512MB 以上ではコスト増加に見合う効果が薄い
+
+| メモリ設定 | 想定起動時間 (コールドスタート) | 備考 |
+|------------|-------------------------------|------|
+| 128MB | 〜5-8秒 | メモリ不足でGCが頻発する可能性 |
+| 256MB | 〜2-4秒 | 推奨設定 |
+| 512MB | 〜1-2秒 | コスト増 |
+
+※ 上記の起動時間は Java Lambda の一般的な傾向に基づく目安値です。実際の値はデプロイ後に計測してください。
+
+### タイムアウト (Timeout: 15)
+
+15秒を選択した理由:
+
+- コールドスタート時の初期化時間を考慮 (Java Lambda は初回起動に数秒必要)
+- アプリケーション処理自体は軽量 (目安: 〜100ms以下)
+- 15秒以内に応答がない場合は異常とみなし早期エラー返却
+
+### 計測の推奨
+
+実際のパフォーマンス計測には以下のコマンドを使用:
+
+```bash
+# ローカル実行での計測
+sam local invoke HelloWorldFunction --event events/event.json
+
+# デプロイ後の計測
+sam logs -n HelloWorldFunction --stack-name sam-hello-lambda --tail
+```
+
+CloudWatch Logs でコールドスタート / ウォームスタートの Duration を確認し、必要に応じてメモリ設定を調整してください。
