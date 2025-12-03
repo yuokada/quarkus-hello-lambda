@@ -45,6 +45,10 @@ jobs:
           args: >-
             --failOnCVSS 7
             --enableRetired
+        env:
+          # see: https://github.com/dependency-check/Dependency-Check_Action/blob/2ba636726705b0f74f126ebeaacaf2ad4600b967/readme.md
+          # actions/setup-java@v1 changes JAVA_HOME so it needs to be reset to match the depcheck image
+          JAVA_HOME: /opt/jdk  
 
       - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v4
