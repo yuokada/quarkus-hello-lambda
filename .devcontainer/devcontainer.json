@@ -23,11 +23,11 @@
                 "java.configuration.runtimes": [
                     {
                         "name": "JavaSE-17",
-                        "path": "/usr/lib64/graalvm/graalvm-community-java17",
+                        "path": "/opt/graalvm",
                         "default": true
                     }
                 ],
-                "java.jdt.ls.java.home": "/usr/lib64/graalvm/graalvm-community-java17",
+                "java.jdt.ls.java.home": "/opt/graalvm",
                 "maven.executable.path": "/opt/maven/bin/mvn"
             }
         }
