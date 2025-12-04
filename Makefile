@@ -15,3 +15,12 @@ deploy: package
 
 delete:
 	sam delete --config-file samconfig.toml
+
+test:
+	cd HelloWorldFunction && ./mvnw test
+
+validate:
+	sam validate --lint
+
+invoke:
+	sam local invoke HelloWorldFunction --event events/event.json
