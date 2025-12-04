@@ -1,0 +1,40 @@
+name: SAM/CFN Template Validation
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - 'template.yaml'
+      - 'samconfig.toml'
+      - '.github/workflows/template-validation.yaml'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'template.yaml'
+      - 'samconfig.toml'
+      - '.github/workflows/template-validation.yaml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup AWS SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: Run SAM Validate
+        run: sam validate --lint
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install cfn-lint
+        run: pip install cfn-lint
+
+      - name: Run cfn-lint
+        run: cfn-lint template.yaml
