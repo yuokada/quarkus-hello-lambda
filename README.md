@@ -64,12 +64,13 @@ The SAM CLI installs dependencies defined in `HelloWorldFunction/pom.xml`, creat
 
 Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
 
-Run functions locally and invoke them with the `sam local invoke` command. This Lambda function is designed for direct invocation (not HTTP API).
+Run functions locally and invoke them with the `sam local invoke` command. This Lambda function is designed for direct invocation (not HTTP API). The function expects a simple JSON input like `{"name":"Randy"}`.
 
 ```bash
-sam-hello-lambda$ sam local invoke HelloWorldFunction --event events/event.json
-# Or with minimal input:
+# Using minimal input (recommended):
 sam-hello-lambda$ echo '{"name":"Randy"}' | sam local invoke HelloWorldFunction
+# Or using the sample event file (Note: events/event.json contains API Gateway event format):
+sam-hello-lambda$ sam local invoke HelloWorldFunction --event events/event.json
 ```
 
 ## Add a resource to your application
