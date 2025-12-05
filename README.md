@@ -165,6 +165,7 @@ Dev Container を使用しない場合は、以下のツールを手動でイン
   - `make clean` / `make build` / `make package`
   - デプロイ: `make deploy`（AWS プロファイル `serverless` を使用）
   - スタック削除: `make delete`
+  - ビルドフラグ（`SCRATCH_BUILD` / `NATIVE_BUILD`）の詳細は [AGENTS.md](./AGENTS.md) を参照
 
 - ローカル実行
   - 単発実行（イベントファイル）: `sam local invoke HelloWorldFunction --event events/event.json`
