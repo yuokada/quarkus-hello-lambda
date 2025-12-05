@@ -1,0 +1,41 @@
+{
+    "name": "Quarkus Lambda Dev Environment",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "moby": true
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "redhat.java",
+                "vscjava.vscode-maven",
+                "redhat.vscode-quarkus",
+                "amazonwebservices.aws-toolkit-vscode"
+            ],
+            "settings": {
+                "java.configuration.runtimes": [
+                    {
+                        "name": "JavaSE-17",
+                        "path": "/opt/graalvm",
+                        "default": true
+                    }
+                ],
+                "java.jdt.ls.java.home": "/opt/graalvm",
+                "maven.executable.path": "/opt/maven/bin/mvn"
+            }
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": "if [ -d HelloWorldFunction ]; then cd HelloWorldFunction && ./mvnw dependency:resolve; else echo 'HelloWorldFunction directory not found, skipping dependency resolution'; fi",
+    "remoteUser": "vscode"
+}
