@@ -18,7 +18,7 @@
     <quarkus.platform.version>3.20.2.2</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.5.5</surefire-plugin.version>
-    <spotless.plugin.version>3.2.1</spotless.plugin.version>
+    <spotless.plugin.version>3.3.0</spotless.plugin.version>
     <google-java-format.version>1.28.0</google-java-format.version>
     <checkstyle.plugin.version>3.6.0</checkstyle.plugin.version>
     <checkstyle.version>12.3.1</checkstyle.version>
@@ -121,18 +121,21 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless.plugin.version}</version>
         <configuration>
-          <encoding>UTF-8</encoding>
           <java>
-            <includes>
-              <include>src/main/java/**/*.java</include>
-              <include>src/test/java/**/*.java</include>
-            </includes>
+            <excludes>
+              <exclude>**/target/**</exclude>
+            </excludes>
             <googleJavaFormat>
               <version>${google-java-format.version}</version>
+              <style>AOSP</style>
+              <formatJavadoc>false</formatJavadoc>
             </googleJavaFormat>
-            <eclipse>
-              <file>${project.basedir}/config/checkstyle/eclipse-java-formatter.xml</file>
-            </eclipse>
+            <importOrder>
+              <order>java|jakarta|org.eclipse,com|org|picocli|io,,io.github.yuokada,\#</order>
+              <semanticSort>true</semanticSort>
+            </importOrder>
+            <removeUnusedImports />
+            <forbidWildcardImports />
           </java>
         </configuration>
         <executions>
