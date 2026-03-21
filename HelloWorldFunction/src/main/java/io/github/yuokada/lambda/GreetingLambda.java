@@ -1,6 +1,8 @@
 package io.github.yuokada.lambda;
 
+import java.util.Set;
 import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -25,6 +27,10 @@ public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse
     }
 
     public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
+        Set<ConstraintViolation<InputEvent>> violations = validator.validate(input);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         if (input.getName() != null) {
             OutputResponse response =
                     new OutputResponse()
