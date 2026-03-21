@@ -1,18 +1,19 @@
 package io.github.yuokada.lambda;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import io.github.yuokada.lambda.model.InputEvent;
-import io.github.yuokada.lambda.model.OutputResponse;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+
+import io.github.yuokada.lambda.model.InputEvent;
+import io.github.yuokada.lambda.model.OutputResponse;
+
 public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse> {
 
-    @Inject
-    Validator validator;
+    @Inject Validator validator;
 
     @Override
     public OutputResponse handleRequest(InputEvent input, Context context) {
@@ -25,8 +26,10 @@ public class GreetingLambda implements RequestHandler<InputEvent, OutputResponse
 
     public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
         if (input.getName() != null) {
-            OutputResponse response = new OutputResponse().setName(input.getName())
-                    .setMessage("Hello " + input.getName());
+            OutputResponse response =
+                    new OutputResponse()
+                            .setName(input.getName())
+                            .setMessage("Hello " + input.getName());
             return response;
         } else {
             OutputResponse response = new OutputResponse().setMessage("Hello World");
