@@ -6,6 +6,14 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "monthly"
   - package-ecosystem: "maven"
     directory: "./HelloWorldFunction"
     schedule:

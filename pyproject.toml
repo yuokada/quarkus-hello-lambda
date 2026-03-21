@@ -8,5 +8,5 @@ dependencies = []
 
 [dependency-groups]
 dev = [
-    "aws-sam-cli>=1.134.0",
+    "aws-sam-cli>=1.156.0",
 ]
