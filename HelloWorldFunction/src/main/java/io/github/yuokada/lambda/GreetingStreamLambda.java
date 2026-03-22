@@ -48,8 +48,7 @@ public class GreetingStreamLambda implements RequestStreamHandler {
                 writer.write(mapper.writeValueAsString(greetingService.buildResponse(inputEvent)));
             } catch (UnrecognizedPropertyException | ConstraintViolationException e) {
                 String message = String.format("InputEvent is invalid! (%s)", e.getMessage());
-                writer.write(
-                        mapper.writeValueAsString(new OutputResponse().setMessage(message)));
+                writer.write(mapper.writeValueAsString(new OutputResponse().setMessage(message)));
             } catch (RuntimeException e) {
                 logger.error(e);
             }

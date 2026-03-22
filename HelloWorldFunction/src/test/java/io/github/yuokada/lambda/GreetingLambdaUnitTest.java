@@ -42,7 +42,8 @@ class GreetingLambdaUnitTest {
 
     @Test
     void buildResponseReturnsHelloWorldWhenValidatorAllowsNullName() {
-        GreetingService service = ValidatorTestHelper.serviceWith(ValidatorTestHelper.permissiveValidator());
+        GreetingService service =
+                ValidatorTestHelper.serviceWith(ValidatorTestHelper.permissiveValidator());
 
         OutputResponse response = service.buildResponse(new InputEvent());
 
@@ -51,7 +52,8 @@ class GreetingLambdaUnitTest {
 
     @Test
     void buildResponseThrowsForInvalidInput() {
-        GreetingService service = ValidatorTestHelper.serviceWith(ValidatorTestHelper.realValidator());
+        GreetingService service =
+                ValidatorTestHelper.serviceWith(ValidatorTestHelper.realValidator());
         InputEvent input = new InputEvent();
         input.setName("");
 
