@@ -3,11 +3,7 @@ package io.github.yuokada.lambda;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,10 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GreetingStreamLambdaUnitTest {
 
+    private GreetingStreamLambda handlerWith(Validator validator) {
+        return new GreetingStreamLambda(ValidatorTestHelper.serviceWith(validator));
+    }
+
     @Test
     void handleRequestWritesGreetingForValidInput() throws IOException {
-        GreetingStreamLambda handler = new GreetingStreamLambda();
-        handler.validator = Validation.buildDefaultValidatorFactory().getValidator();
+        GreetingStreamLambda handler = handlerWith(ValidatorTestHelper.realValidator());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(
@@ -36,8 +35,7 @@ class GreetingStreamLambdaUnitTest {
 
     @Test
     void handleRequestWritesHelloWorldWhenValidatorAllowsNullName() throws IOException {
-        GreetingStreamLambda handler = new GreetingStreamLambda();
-        handler.validator = permissiveValidator();
+        GreetingStreamLambda handler = handlerWith(ValidatorTestHelper.permissiveValidator());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(
@@ -50,8 +48,7 @@ class GreetingStreamLambdaUnitTest {
 
     @Test
     void handleRequestWritesValidationMessageForUnknownField() throws IOException {
-        GreetingStreamLambda handler = new GreetingStreamLambda();
-        handler.validator = Validation.buildDefaultValidatorFactory().getValidator();
+        GreetingStreamLambda handler = handlerWith(ValidatorTestHelper.realValidator());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(
@@ -65,8 +62,7 @@ class GreetingStreamLambdaUnitTest {
 
     @Test
     void handleRequestWritesValidationMessageForBlankName() throws IOException {
-        GreetingStreamLambda handler = new GreetingStreamLambda();
-        handler.validator = Validation.buildDefaultValidatorFactory().getValidator();
+        GreetingStreamLambda handler = handlerWith(ValidatorTestHelper.realValidator());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(
@@ -79,8 +75,7 @@ class GreetingStreamLambdaUnitTest {
 
     @Test
     void handleRequestSwallowsRuntimeExceptionFromMapper() throws IOException {
-        GreetingStreamLambda handler = new GreetingStreamLambda();
-        handler.validator = permissiveValidator();
+        GreetingStreamLambda handler = handlerWith(ValidatorTestHelper.permissiveValidator());
         handler.mapper =
                 new ObjectMapper() {
                     @Override
@@ -94,46 +89,5 @@ class GreetingStreamLambdaUnitTest {
                 new ByteArrayInputStream("{}".getBytes(StandardCharsets.UTF_8)), output, null);
 
         assertEquals("", output.toString(StandardCharsets.UTF_8));
-    }
-
-    private Validator permissiveValidator() {
-        return (Validator)
-                Proxy.newProxyInstance(
-                        Validator.class.getClassLoader(),
-                        new Class<?>[] {Validator.class},
-                        (proxy, method, args) -> {
-                            if ("validate".equals(method.getName())) {
-                                return Collections.<ConstraintViolation<Object>>emptySet();
-                            }
-                            if ("forExecutables".equals(method.getName())) {
-                                throw new UnsupportedOperationException();
-                            }
-                            if ("unwrap".equals(method.getName())) {
-                                throw new UnsupportedOperationException();
-                            }
-                            return defaultValue(method.getReturnType());
-                        });
-    }
-
-    private Object defaultValue(Class<?> type) {
-        if (!type.isPrimitive()) {
-            return null;
-        }
-        if (boolean.class.equals(type)) {
-            return false;
-        }
-        if (char.class.equals(type)) {
-            return '\0';
-        }
-        if (byte.class.equals(type)
-                || short.class.equals(type)
-                || int.class.equals(type)
-                || long.class.equals(type)) {
-            return 0;
-        }
-        if (float.class.equals(type) || double.class.equals(type)) {
-            return 0.0;
-        }
-        return null;
     }
 }

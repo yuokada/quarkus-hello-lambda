@@ -8,13 +8,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
-import jakarta.validation.Validator;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
@@ -29,49 +25,34 @@ import io.github.yuokada.lambda.model.OutputResponse;
 public class GreetingStreamLambda implements RequestStreamHandler {
 
     private static final Logger logger = Logger.getLogger(GreetingStreamLambda.class);
-    @Inject Validator validator;
-    // Jackson
-    ObjectMapper mapper = new ObjectMapper();
+    private final GreetingService greetingService;
+    ObjectMapper mapper;
 
-    public OutputResponse handleRequestWithValidation(@Valid InputEvent input, Context context) {
-        Set<ConstraintViolation<InputEvent>> violations = validator.validate(input);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
-        if (input.getName() != null) {
-            OutputResponse response =
-                    new OutputResponse()
-                            .setName(input.getName())
-                            .setMessage("Hello " + input.getName());
-            return response;
-        } else {
-            OutputResponse response = new OutputResponse().setMessage("Hello World");
-            return response;
-        }
+    @Inject
+    public GreetingStreamLambda(GreetingService greetingService) {
+        this.greetingService = greetingService;
+        this.mapper = new ObjectMapper();
     }
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context)
             throws IOException {
-        BufferedReader reader =
-                new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
-        BufferedWriter writer =
-                new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
-
-        try {
-            InputEvent inputEvent = mapper.readValue(reader, InputEvent.class);
-            logger.info(input);
-            OutputResponse response = handleRequestWithValidation(inputEvent, context);
-            writer.write(mapper.writeValueAsString(response));
-        } catch (UnrecognizedPropertyException | ConstraintViolationException e) {
-            String message = String.format("InputEvent is invalid! (%s)", e.getMessage());
-            OutputResponse response = new OutputResponse().setMessage(message);
-            writer.write(mapper.writeValueAsString(response));
-        } catch (RuntimeException e) {
-            logger.info(e.getMessage());
-        } finally {
-            reader.close();
-            writer.close();
+        try (BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+                BufferedWriter writer =
+                        new BufferedWriter(
+                                new OutputStreamWriter(output, StandardCharsets.UTF_8))) {
+            try {
+                InputEvent inputEvent = mapper.readValue(reader, InputEvent.class);
+                logger.info(inputEvent);
+                writer.write(mapper.writeValueAsString(greetingService.buildResponse(inputEvent)));
+            } catch (UnrecognizedPropertyException | ConstraintViolationException e) {
+                String message = String.format("InputEvent is invalid! (%s)", e.getMessage());
+                writer.write(
+                        mapper.writeValueAsString(new OutputResponse().setMessage(message)));
+            } catch (RuntimeException e) {
+                logger.error(e);
+            }
         }
     }
 }
